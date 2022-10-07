@@ -73,7 +73,7 @@ class HmacTokenTest extends \PHPUnit\Framework\TestCase
                               ->sign($this->signer, 'testing')
                               ->getToken();
 
-        $this->assertAttributeInstanceOf(Signature::class, 'signature', $token);
+        $this->assertSame(Signature::class, get_class($token->signature()));
         $this->assertEquals('1234', $token->getHeader('jki'));
         $this->assertEquals('http://client.abc.com', $token->getClaim('aud'));
         $this->assertEquals('http://api.abc.com', $token->getClaim('iss'));

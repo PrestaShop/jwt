@@ -40,8 +40,8 @@ class KeyTest extends \PHPUnit\Framework\TestCase
     {
         $key = new Key('testing', 'test');
 
-        $this->assertAttributeEquals('testing', 'content', $key);
-        $this->assertAttributeEquals('test', 'passphrase', $key);
+        $this->assertSame('testing', $key->contents());
+        $this->assertSame('test', $key->passphrase());
     }
 
     /**
@@ -55,14 +55,12 @@ class KeyTest extends \PHPUnit\Framework\TestCase
     {
         $key = new Key('file://' . vfsStream::url('root/test.pem'));
 
-        $this->assertAttributeEquals('testing', 'content', $key);
-        $this->assertAttributeEquals(null, 'passphrase', $key);
+        $this->assertSame('testing', $key->contents());
+        $this->assertSame('', $key->passphrase());
     }
 
     /**
      * @test
-     *
-     * @expectedException \InvalidArgumentException
      *
      * @covers Lcobucci\JWT\Signer\Key::__construct
      * @covers Lcobucci\JWT\Signer\Key::setContent
@@ -70,13 +68,13 @@ class KeyTest extends \PHPUnit\Framework\TestCase
      */
     public function constructShouldRaiseExceptionWhenFileDoesNotExists()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         new Key('file://' . vfsStream::url('root/test2.pem'));
     }
 
     /**
      * @test
-     *
-     * @expectedException \InvalidArgumentException
      *
      * @covers Lcobucci\JWT\Signer\Key::__construct
      * @covers Lcobucci\JWT\Signer\Key::setContent
@@ -84,6 +82,8 @@ class KeyTest extends \PHPUnit\Framework\TestCase
      */
     public function constructShouldRaiseExceptionWhenFileGetContentsFailed()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         new Key('file://' . vfsStream::url('root/emptyFolder'));
     }
 

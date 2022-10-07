@@ -49,7 +49,7 @@ class BuilderTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->encoder = $this->createMock(Encoder::class);
     }

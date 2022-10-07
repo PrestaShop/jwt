@@ -26,8 +26,8 @@ class KeychainTest extends \PHPUnit\Framework\TestCase
         $key = $keychain->getPrivateKey('testing', 'test');
 
         $this->assertInstanceOf(Key::class, $key);
-        $this->assertAttributeEquals('testing', 'content', $key);
-        $this->assertAttributeEquals('test', 'passphrase', $key);
+        $this->assertSame('testing', $key->contents());
+        $this->assertSame('test', $key->passphrase());
     }
 
     /**
@@ -43,7 +43,7 @@ class KeychainTest extends \PHPUnit\Framework\TestCase
         $key = $keychain->getPublicKey('testing');
 
         $this->assertInstanceOf(Key::class, $key);
-        $this->assertAttributeEquals('testing', 'content', $key);
-        $this->assertAttributeEquals(null, 'passphrase', $key);
+        $this->assertSame('testing', $key->contents());
+        $this->assertSame('', $key->passphrase());
     }
 }

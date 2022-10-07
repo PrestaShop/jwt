@@ -21,7 +21,7 @@ class SignatureTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->signer = $this->createMock(Signer::class);
     }
@@ -35,7 +35,7 @@ class SignatureTest extends \PHPUnit\Framework\TestCase
     {
         $signature = new Signature('test');
 
-        $this->assertAttributeEquals('test', 'hash', $signature);
+        $this->assertSame('test', $signature->hash());
     }
 
     /**

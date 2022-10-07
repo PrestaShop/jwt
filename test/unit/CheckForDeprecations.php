@@ -3,6 +3,7 @@
 namespace Lcobucci\JWT;
 
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Error\Deprecated;
 use function class_exists;
 use function restore_error_handler;
 use function set_error_handler;
@@ -27,7 +28,7 @@ trait CheckForDeprecations
 
         if (class_exists(\PHPUnit_Framework_Error_Deprecated::class)) {
             \PHPUnit_Framework_Error_Deprecated::$enabled = true;
-        } else {
+        } else if (property_exists(\PHPUnit\Framework\Error\Deprecated::class, 'enabled')) {
             \PHPUnit\Framework\Error\Deprecated::$enabled = true;
         }
 
@@ -37,7 +38,7 @@ trait CheckForDeprecations
         $this->actualDeprecationMessages   = [];
     }
 
-    public function expectDeprecation($message)
+    public function expectDeprecation($message = null): void
     {
         if ($this->expectedDeprecationMessages !== null) {
             $this->expectedDeprecationMessages[] = $message;
@@ -47,8 +48,10 @@ trait CheckForDeprecations
 
         if (class_exists(\PHPUnit_Framework_Error_Deprecated::class)) {
             \PHPUnit_Framework_Error_Deprecated::$enabled = true;
-        } else {
+        } else if (property_exists(\PHPUnit\Framework\Error\Deprecated::class, 'enabled')) {
             \PHPUnit\Framework\Error\Deprecated::$enabled = true;
+        } else {
+            //$this->expectException(Deprecated::class);
         }
 
         $this->expectedDeprecationMessages = [$message];

@@ -22,8 +22,8 @@ class BasicTest extends \PHPUnit\Framework\TestCase
     {
         $claim = new Basic('test', 1);
 
-        $this->assertAttributeEquals('test', 'name', $claim);
-        $this->assertAttributeEquals(1, 'value', $claim);
+        $this->assertSame('test', $claim->getName());
+        $this->assertSame(1, $claim->getValue());
     }
 
     /**

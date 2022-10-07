@@ -45,8 +45,6 @@ class RsaTokenTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
-     * @expectedException \InvalidArgumentException
-     *
      * @covers Lcobucci\JWT\Builder
      * @covers Lcobucci\JWT\Token
      * @covers Lcobucci\JWT\Signature
@@ -61,6 +59,8 @@ class RsaTokenTest extends \PHPUnit\Framework\TestCase
      */
     public function builderShouldRaiseExceptionWhenKeyIsInvalid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $user = (object) ['name' => 'testing', 'email' => 'testing@abc.com'];
 
         (new Builder())->setId(1)
@@ -72,8 +72,6 @@ class RsaTokenTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     *
-     * @expectedException \InvalidArgumentException
      *
      * @covers Lcobucci\JWT\Builder
      * @covers Lcobucci\JWT\Token
@@ -89,6 +87,8 @@ class RsaTokenTest extends \PHPUnit\Framework\TestCase
      */
     public function builderShouldRaiseExceptionWhenKeyIsNotRsaCompatible()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $user = (object) ['name' => 'testing', 'email' => 'testing@abc.com'];
 
         (new Builder())->setId(1)
@@ -127,7 +127,7 @@ class RsaTokenTest extends \PHPUnit\Framework\TestCase
                               ->sign($this->signer, static::$rsaKeys['private'])
                               ->getToken();
 
-        $this->assertAttributeInstanceOf(Signature::class, 'signature', $token);
+        $this->assertSame(Signature::class, get_class($token->signature()));
         $this->assertEquals('1234', $token->getHeader('jki'));
         $this->assertEquals('http://client.abc.com', $token->getClaim('aud'));
         $this->assertEquals('http://api.abc.com', $token->getClaim('iss'));
@@ -208,8 +208,6 @@ class RsaTokenTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
-     * @expectedException \InvalidArgumentException
-     *
      * @depends builderCanGenerateAToken
      *
      * @covers Lcobucci\JWT\Builder
@@ -227,6 +225,7 @@ class RsaTokenTest extends \PHPUnit\Framework\TestCase
      */
     public function verifyShouldRaiseExceptionWhenKeyIsNotRsaCompatible(Token $token)
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->assertFalse($token->verify($this->signer, self::$ecdsaKeys['public1']));
     }
 

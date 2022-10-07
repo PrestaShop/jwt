@@ -31,11 +31,11 @@ class EncoderTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @covers Lcobucci\JWT\Parsing\Encoder::jsonEncode
-     *
-     * @expectedException \RuntimeException
      */
     public function jsonEncodeMustRaiseExceptionWhenAnErrorHasOccured()
     {
+        $this->expectException(\RuntimeException::class);
+
         $encoder = new Encoder();
         $encoder->jsonEncode("\xB1\x31");
     }

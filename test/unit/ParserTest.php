@@ -30,7 +30,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->decoder = $this->createMock(Decoder::class);
     }
@@ -62,11 +62,11 @@ class ParserTest extends \PHPUnit\Framework\TestCase
      *
      * @covers Lcobucci\JWT\Parser::parse
      * @covers Lcobucci\JWT\Parser::splitJwt
-     *
-     * @expectedException InvalidArgumentException
      */
     public function parseMustRaiseExceptionWhenJWSIsNotAString()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $parser = $this->createParser();
         $parser->parse(['asdasd']);
     }
@@ -78,11 +78,11 @@ class ParserTest extends \PHPUnit\Framework\TestCase
      *
      * @covers Lcobucci\JWT\Parser::parse
      * @covers Lcobucci\JWT\Parser::splitJwt
-     *
-     * @expectedException InvalidArgumentException
      */
     public function parseMustRaiseExceptionWhenJWSDontHaveThreeParts()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $parser = $this->createParser();
         $parser->parse('');
     }
@@ -95,11 +95,11 @@ class ParserTest extends \PHPUnit\Framework\TestCase
      * @covers Lcobucci\JWT\Parser::parse
      * @covers Lcobucci\JWT\Parser::splitJwt
      * @covers Lcobucci\JWT\Parser::parseHeader
-     *
-     * @expectedException RuntimeException
      */
     public function parseMustRaiseExceptionWhenHeaderCannotBeDecoded()
     {
+        $this->expectException(RuntimeException::class);
+
         $this->decoder->expects($this->any())
                       ->method('jsonDecode')
                       ->willThrowException(new RuntimeException());
@@ -116,11 +116,11 @@ class ParserTest extends \PHPUnit\Framework\TestCase
      * @covers Lcobucci\JWT\Parser::parse
      * @covers Lcobucci\JWT\Parser::splitJwt
      * @covers Lcobucci\JWT\Parser::parseHeader
-     *
-     * @expectedException InvalidArgumentException
      */
     public function parseMustRaiseExceptionWhenHeaderIsFromAnEncryptedToken()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->decoder->expects($this->any())
                       ->method('jsonDecode')
                       ->willReturn(['enc' => 'AAA']);

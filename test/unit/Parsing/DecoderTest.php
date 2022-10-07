@@ -34,11 +34,11 @@ class DecoderTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @covers Lcobucci\JWT\Parsing\Decoder::jsonDecode
-     *
-     * @expectedException \RuntimeException
      */
     public function jsonDecodeMustRaiseExceptionWhenAnErrorHasOccured()
     {
+        $this->expectException(\RuntimeException::class);
+
         $decoder = new Decoder();
         $decoder->jsonDecode('{"test":\'test\'}');
     }

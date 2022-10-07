@@ -24,7 +24,7 @@ class ValidationDataTest extends \PHPUnit\Framework\TestCase
         $expected = $this->createExpectedData();
         $data = new ValidationData(1);
 
-        $this->assertAttributeSame($expected, 'items', $data);
+        $this->expectDataSame($expected, $data);
     }
 
     /**
@@ -38,7 +38,7 @@ class ValidationDataTest extends \PHPUnit\Framework\TestCase
         $expected = $this->createExpectedData(null, null, null, null, 111, 111, 89);
         $data = new ValidationData(100, 11);
 
-        $this->assertAttributeSame($expected, 'items', $data);
+        $this->expectDataSame($expected, $data);
     }
 
     /**
@@ -57,7 +57,7 @@ class ValidationDataTest extends \PHPUnit\Framework\TestCase
         $data = new ValidationData(1);
         $data->setId($id);
 
-        $this->assertAttributeSame($expected, 'items', $data);
+        $this->expectDataSame($expected, $data);
     }
 
     /**
@@ -76,7 +76,7 @@ class ValidationDataTest extends \PHPUnit\Framework\TestCase
         $data = new ValidationData(1);
         $data->setIssuer($iss);
 
-        $this->assertAttributeSame($expected, 'items', $data);
+        $this->expectDataSame($expected, $data);
     }
 
     /**
@@ -95,7 +95,7 @@ class ValidationDataTest extends \PHPUnit\Framework\TestCase
         $data = new ValidationData(1);
         $data->setAudience($aud);
 
-        $this->assertAttributeSame($expected, 'items', $data);
+        $this->expectDataSame($expected, $data);
     }
 
     /**
@@ -114,7 +114,7 @@ class ValidationDataTest extends \PHPUnit\Framework\TestCase
         $data = new ValidationData(1);
         $data->setSubject($sub);
 
-        $this->assertAttributeSame($expected, 'items', $data);
+        $this->expectDataSame($expected, $data);
     }
 
     /**
@@ -131,7 +131,7 @@ class ValidationDataTest extends \PHPUnit\Framework\TestCase
         $data = new ValidationData(1);
         $data->setCurrentTime(2);
 
-        $this->assertAttributeSame($expected, 'items', $data);
+        $this->expectDataSame($expected, $data);
     }
 
     /**
@@ -148,7 +148,7 @@ class ValidationDataTest extends \PHPUnit\Framework\TestCase
         $data = new ValidationData(15, 10);
         $data->setCurrentTime(20);
 
-        $this->assertAttributeSame($expected, 'items', $data);
+        $this->expectDataSame($expected, $data);
     }
 
     /**
@@ -266,5 +266,17 @@ class ValidationDataTest extends \PHPUnit\Framework\TestCase
             'nbf' => $nbf !== null ? $nbf: $iat,
             'exp' => $exp !== null ? $exp: $iat
         ];
+    }
+
+    /**
+     * @param array $expected
+     * @param ValidationData $data
+     *
+     * @return void
+     */
+    private function expectDataSame(array $expected, ValidationData $data) {
+        foreach ($expected as $key => $value) {
+            $this->assertSame($value, $data->get($key));
+        }
     }
 }

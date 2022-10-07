@@ -46,8 +46,6 @@ class EcdsaTokenTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
-     * @expectedException \InvalidArgumentException
-     *
      * @covers Lcobucci\JWT\Builder
      * @covers Lcobucci\JWT\Token
      * @covers Lcobucci\JWT\Signature
@@ -63,6 +61,8 @@ class EcdsaTokenTest extends \PHPUnit\Framework\TestCase
      */
     public function builderShouldRaiseExceptionWhenKeyIsInvalid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $user = (object) ['name' => 'testing', 'email' => 'testing@abc.com'];
 
         (new Builder())->setId(1)
@@ -74,8 +74,6 @@ class EcdsaTokenTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     *
-     * @expectedException \InvalidArgumentException
      *
      * @covers Lcobucci\JWT\Builder
      * @covers Lcobucci\JWT\Token
@@ -92,6 +90,8 @@ class EcdsaTokenTest extends \PHPUnit\Framework\TestCase
      */
     public function builderShouldRaiseExceptionWhenKeyIsNotEcdsaCompatible()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $user = (object) ['name' => 'testing', 'email' => 'testing@abc.com'];
 
         (new Builder())->setId(1)
@@ -131,7 +131,7 @@ class EcdsaTokenTest extends \PHPUnit\Framework\TestCase
                               ->sign($this->signer, static::$ecdsaKeys['private'])
                               ->getToken();
 
-        $this->assertAttributeInstanceOf(Signature::class, 'signature', $token);
+        $this->assertSame(Signature::class, get_class($token->signature()));
         $this->assertEquals('1234', $token->getHeader('jki'));
         $this->assertEquals('http://client.abc.com', $token->getClaim('aud'));
         $this->assertEquals('http://api.abc.com', $token->getClaim('iss'));
@@ -215,8 +215,6 @@ class EcdsaTokenTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
-     * @expectedException \InvalidArgumentException
-     *
      * @depends builderCanGenerateAToken
      *
      * @covers Lcobucci\JWT\Builder
@@ -235,6 +233,8 @@ class EcdsaTokenTest extends \PHPUnit\Framework\TestCase
      */
     public function verifyShouldRaiseExceptionWhenKeyIsNotEcdsaCompatible(Token $token)
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->assertFalse($token->verify($this->signer, static::$rsaKeys['public']));
     }
 
